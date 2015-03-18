@@ -4,6 +4,7 @@
 "use strict";
 
 var express = require("express"),
+	bodyParser = require('body-parser'),
     http = require("http"),
     app = express(),
     credentials = require("./credentials.json"),
@@ -17,8 +18,8 @@ var params = {screen_name: "CrackerJack473"};
 
 
 app.use(express.static(__dirname + "/client"));
-app.use(express.json());       // to support JSON-encoded request body
-app.use(express.urlencoded()); // to support URL-encoded request body
+app.use(bodyParser.json());       // to support JSON-encoded request body
+app.use(bodyParser.urlencoded({ extended: true })); // to support URL-encoded request body
 
 
 // Initialize and populate imitation database.
@@ -39,34 +40,39 @@ database.createUser("tempuser",
     ["CrackerJack473"]);
 
 
-app.get("/feed", function(req, res) {
-	twitterClient.get("statuses/user_timeline", params, function(error, tweets, response){
+app.route("/feed")
+.get(function (req, res) {
+	twitterClient.get("statuses/user_timeline", params, function(error, tweets, response) {
 		if (!error) {
 			tweets.forEach(function (t) {
 				feed.push(t.text);	
 			});
 			res.json(feed);			
+		} else {
+			console.log("ERROR: " + JSON.stringify(error));
+			res.json(error);
 		}
 	});
-});
+})
 
-app.post("/publish", function(req, res) {
-	console.log("I will publish the tweet to twitter");
-	console.log(req.body.tweet);
+app.route("/publish")
+.post(function (req, res) {
+	console.log("Publishing Tweet: " + req.body.tweet);
 	// TODO: validate the input received
-	twitterClient.post("statuses/update", {status: req.body.tweet},  function(error, t, response){
-		if (error) {
-			console.log("error:");
-			res.json({"message":"An error occurred!"});
-			throw error;
+	twitterClient.post("statuses/update", {status: req.body.tweet},  function(error, t, response) {
+		if (!error) {
+			res.json({"message":"SUCCESS: Tweet Published"});
+		} else {
+			console.log("ERROR: " + JSON.stringify(error));
+			res.json(error);
 		}
-		// console.log(t);  // Tweet body. 
-		// console.log(response);  // Raw response object. 
+		// console.log(t);  // Tweet body.
+		// console.log(response);  // Raw response object.
 	});
-
-	res.json({"message":"Tweet is published successfully!"});
-
-});
+})
+.get(function (req, res) {
+	res.end("Test");
+})
 
 http.createServer(app).listen(3000);
 
