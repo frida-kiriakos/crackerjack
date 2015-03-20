@@ -4,9 +4,10 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var session = require('express-session');
 
 var routes = require('./routes/index');
-var users = require('./routes/users');
+var login = require('./routes/login');
 var feed = require("./routes/feed");
 var publish = require("./routes/publish");
 
@@ -25,7 +26,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
-app.use('/users', users);
+app.use('/login', login);
 app.use('/feed', feed);
 app.use("/publish", publish);
 
@@ -35,6 +36,30 @@ app.use(function(req, res, next) {
   err.status = 404;
   next(err);
 });
+
+// Function used to generate unique user session IDs
+// Implementation found at: http://stackoverflow.com/a/8809472
+var genuuid = function(){
+    var d = new Date().getTime();
+    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = (d + Math.random()*16)%16 | 0;
+        d = Math.floor(d/16);
+        return (c=='x' ? r : (r&0x3|0x8)).toString(16);
+    });
+    return uuid;
+};
+
+// Create user session
+app.use(session({
+  genid: function() {
+    return genuuid(); // use UUIDs for session IDs
+  },
+  secret: "f4tk4t4u",
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: true }
+}));
+
 
 // TODO: move these to the main route (aka controller)
 
