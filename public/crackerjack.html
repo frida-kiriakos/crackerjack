@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Welcome to Cracker Jack</title>
+		<link rel="stylesheet" type="text/css" href="css/style.css">
+		<link href="css/reset.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+	</head>
+	<body>
+		<header>
+			<div class = "header">
+				<h1 class= "title">You vote it, We post it!</h1>
+				
+				<nav>
+					<span>Username: CrackerJack</span>
+					<a href="LoginPage.html">Log-out</a>
+				</nav>
+			</div>
+		</header>
+
+		<main>
+			<div class ="tweetsection">
+				<h1> Twitter Sample Test </h1>
+    			<p class = "Post">Enter to post </p>
+    			<textarea></textarea>
+    			<button>POST</button>
+    		</div>
+
+    		<div class ="published">
+				<a class="twitter-timeline" href="https://twitter.com/CrackerJack473" data-widget-id="575783346589974529"data-chrome = "nofooter noscrollbar" data-tweet-limit ="5">Tweets by @CrackerJack473</a><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+			</div>
+
+			<div class ="unpublished">
+				<h1 class = "content">Pending Tweets</h1>
+					<div class="input-container">
+                    	<div class="char-len"></div>
+                    		<textarea class="input-text"></textarea>
+                    	<div class="input-buttons"></div>
+                    <div class="post-list"></div>
+			</div>
+		</main>
+        <script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
+        <script src="javascripts/app.js"></script>
+	</body>
+</html>	
