@@ -1,2 +1,4 @@
 # do not include twitter credentials
 credentials.json
+# modules and dependencies can be installed by running npm install
+node_modules/
