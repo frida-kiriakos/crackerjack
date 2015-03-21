@@ -10,8 +10,16 @@ var routes = require('./routes/index');
 var login = require('./routes/login');
 var feed = require("./routes/feed");
 var publish = require("./routes/publish");
+var users = require("./routes/users");
+var posts = require("./routes/posts");
 
 var app = express();
+
+// mongoose is the mongodb driver
+var mongoose = require('mongoose');
+
+// connect to mongodb database which is called crackerjack
+mongoose.connect('mongodb://localhost/crackerjack');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -27,10 +35,12 @@ app.use(cookieParser());
 // to serve static files
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', routes);
-app.use('/login', login);
+app.use("/", routes);
+app.use("/login", login);
 app.use('/feed', feed);
 app.use("/publish", publish);
+app.use("/users", users);
+app.use("/posts", posts);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -63,7 +73,7 @@ app.use(session({
 }));
 
 
-// TODO: move these to the main route (aka controller)
+// TODO: delete below since we created a mongodb database
 
 // Initialize and populate imitation database.
 var database = require("./database.js");
@@ -82,7 +92,7 @@ database.createUser("tempuser",
     "tempuser@nomail.com",
     ["CrackerJack473"]);
 
-// end of code to be refactored and moved
+// end of code to be deleted
 
 // error handlers
 

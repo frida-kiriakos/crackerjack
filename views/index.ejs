@@ -1,15 +1,59 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
 	<head>
-		<title>CrackerJack</title>
+		<title>Welcome to Cracker Jack</title>
+		<!-- <link href="stylesheets/reset.css" rel="stylesheet" type="text/css"> -->
+		<link rel="stylesheet" type="text/css" href="stylesheets/style.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 	</head>
-
 	<body>
-		<h1>CrackerJack Site</h1>
-		<h2>I will post to twitter</h2>
-		<form action="/publish" method="post">
-			<input name="tweet"></input>
-			<button type="submit">Publish to Twitter</button>
-		</form>		
+		<header>
+			<div class = "header">
+				<nav>
+					<span>Username: CrackerJack</span>
+					<a href="/login">Logout</a>
+				</nav>
+				<h1 class= "title">You vote it, We post it!</h1>
+			</div>
+		</header>
+
+		<main>
+			<div class ="tweetsection">
+				<h2> Add the tweet you want to post here so your group can vote on it </h2>
+				<p class="post">
+					<!-- this form is just for testing the post model, we need to replace with ajax calls -->
+	    			<form action="/posts/new" method="post">
+	    				<textarea name="tweetBody" class="input-text"></textarea>
+						<!-- this is hard coded for now, later we will use the session to get the username posting -->
+						<input name="username" type="hidden" value="frida"></input>
+						<button id="postTweet" type="submit" class="btn btn-primary">Post</button>
+					</form>
+				</p>	
+    		</div>
+
+    		<div class ="published">
+				<a class="twitter-timeline" href="https://twitter.com/CrackerJack473" data-widget-id="575783346589974529"data-chrome = "nofooter noscrollbar" data-tweet-limit ="5">Tweets by @CrackerJack473</a>
+				<script>
+				!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+				</script>
+			</div>
+
+			<div class ="unpublished">
+				<h1 class = "content">Pending Tweets</h1>
+					<ul>
+						<% if (posts) { %>
+							<% posts.forEach(function(post) { %>
+								<li><%= post.body%> 
+									<%if (post.author) { %>
+										- By: <%= post.author.username%>
+									<% } %>
+								</li>
+							<%});%>
+						<% } %>
+					</ul>	
+			</div>
+		</main>
+        <script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
+        <script src="javascripts/app.js"></script>
 	</body>
-</html>
+</html>	
