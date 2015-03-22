@@ -8,7 +8,8 @@ var postsSchema = new Schema({
 	upvotes: Number,
 	downvotes: Number,
 	upvoters: [{ type: Number, ref: 'User' }],
-	downvoters: [{ type: Number, ref: 'User' }]
+	downvoters: [{ type: Number, ref: 'User' }],
+	published: Boolean
 });
 
 module.exports = mongoose.model('Post', postsSchema);

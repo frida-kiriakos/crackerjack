@@ -2,6 +2,20 @@
 /* jshint browser: true, jquery: true, curly: true, eqeqeq: true, forin: true, immed: true, indent: 4, latedef: true, newcap: true, nonew: true, quotmark: double, strict: true, undef: true, unused: true */
 var main = function () {
 	"use strict";
+
+	// the below AJAX request is an example of using the /posts API, 
+	// it will return the posts array and can be used below instead of the hard coded post
+	// this is only if we need to modify our code to use AJAX
+	$.getJSON("http://localhost:3000/posts", function(posts) {
+		posts.forEach(function(post) {
+			var $p = $("<p>");
+			$p.text(post.body + " - By: " + post.author.username);
+			// replace this with the correct tag ID
+			// $("#pendingTweets").append($p);
+
+		});
+	});
+/* posts are being diplayed in the embedded JS in views/index.ejs
 	var Post = function (textpost, id){
 		this.id = id;
 		this.textpost = textpost;
@@ -71,5 +85,7 @@ var main = function () {
 	
 
 	$('div .input-buttons').append($btn_addpost);
+*/
+	!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
 };
 $(document).ready(main);

@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<title>Welcome to Cracker Jack</title>
-		<!-- <link href="stylesheets/reset.css" rel="stylesheet" type="text/css"> -->
+		<link href="stylesheets/reset.css" rel="stylesheet" type="text/css">
 		<link rel="stylesheet" type="text/css" href="stylesheets/style.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 	</head>
@@ -11,7 +11,8 @@
 			<div class = "header">
 				<nav>
 					<span>Username: CrackerJack</span>
-					<a href="/login">Logout</a>
+					<!-- TODO: need a logout method to clear the user session and redirects to login page -->
+					<a href="/logout">Logout</a>
 				</nav>
 				<h1 class= "title">You vote it, We post it!</h1>
 			</div>
@@ -21,37 +22,46 @@
 			<div class ="tweetsection">
 				<h2> Add the tweet you want to post here so your group can vote on it </h2>
 				<p class="post">
-					<!-- this form is just for testing the post model, we need to replace with ajax calls -->
 	    			<form action="/posts/new" method="post">
 	    				<textarea name="tweetBody" class="input-text"></textarea>
-						<!-- this is hard coded for now, later we will use the session to get the username posting -->
+						<!-- TODO: this is hard coded for now, later we will use the session to get the username posting -->
 						<input name="username" type="hidden" value="frida"></input>
 						<button id="postTweet" type="submit" class="btn btn-primary">Post</button>
 					</form>
 				</p>	
     		</div>
-
+<!-- I noticed that it takes a while for the widget to update and it also slows down the page, we should consider using stream twitter API or feed API under routes -->
     		<div class ="published">
 				<a class="twitter-timeline" href="https://twitter.com/CrackerJack473" data-widget-id="575783346589974529"data-chrome = "nofooter noscrollbar" data-tweet-limit ="5">Tweets by @CrackerJack473</a>
-				<script>
-				!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
-				</script>
 			</div>
 
 			<div class ="unpublished">
 				<h1 class = "content">Pending Tweets</h1>
-					<ul>
-						<% if (posts) { %>
-							<% posts.forEach(function(post) { %>
-								<li><%= post.body%> 
+				<!-- we can use the below embedded JS or use the /posts API, same for the votes -->
+					<% if (posts) { %>
+						<% posts.forEach(function(post) { %>
+							<% if (post.published === false) { %>
+								<p class="post"><%= post.body%> 
 									<%if (post.author) { %>
 										- By: <%= post.author.username%>
 									<% } %>
-								</li>
-							<%});%>
-						<% } %>
-					</ul>	
+										- Votes: <%= post.upvotes - post.downvotes%>
+								</p>
+								<!-- TODO: need to check if logged in user is not the author of the post, to show the buttons or hide them-->
+								<!-- TODO: need to send the logged in user id or session -->
+								<a href="/posts/upvote/<%= post._id%>" class="btn btn-default"><span class="glyphicon glyphicon-arrow-up"></span></a>
+
+								<a href="/posts/downvote/<%= post._id%>" class="btn btn-default"><span class="glyphicon glyphicon-arrow-down"></span></a>
+								<!-- TODO: check if logged in user is an admin, show publish button -->
+								<!-- TODO: discuss the criteria for publishing -->
+								<% if (post.upvotes - post.downvotes >= 5) { %>
+									<a href="/publish/<%= post._id%>" class="btn btn-default">Publish to Twitter</a>
+								<% } %>
+							<% } %>				
+						<%});%>
+					<% } %>
 			</div>
+
 		</main>
         <script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
         <script src="javascripts/app.js"></script>

@@ -7,15 +7,6 @@ var User = require("../models/user");
 // if so render the login page if not logged in and render the main page if logged in
 /* GET home page. */
 router.get('/', function(req, res, next) {
-	// the following query retrieves the posts by a certain user
-	// User
-	// .findOne({username: "frida"})
-	// .populate("posts")
-	// .exec(function (err, user) {
-	//   if (err) return handleError(err);
-	//   console.log("posts by: " + user.username + " : " + user.posts);
-	//   res.render('index', { posts: user.posts });
-	// });
 	
 	// the following query retrieves all posts and populates the author object to retrieve the owner of the post
 	Post
@@ -26,7 +17,6 @@ router.get('/', function(req, res, next) {
 			console.log(err);
 			res.render("index");
 		}
-		// console.log("posts: " + posts);
 		res.render('index', { posts: posts });
 	});
 	
