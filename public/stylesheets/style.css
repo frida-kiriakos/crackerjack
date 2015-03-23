@@ -16,10 +16,10 @@ body{
 
 main .unpublished{
 	float:right;
-	width: 400px;
+	width: 50%;
 }
 
 main .published{
 	float:left;
-	width: 650px;
+	width: 50%;
 }

@@ -4,13 +4,22 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var session = require('express-session');
 
 var routes = require('./routes/index');
-var users = require('./routes/users');
+var login = require('./routes/login');
 var feed = require("./routes/feed");
 var publish = require("./routes/publish");
+var users = require("./routes/users");
+var posts = require("./routes/posts");
 
 var app = express();
+
+// mongoose is the mongodb driver
+var mongoose = require('mongoose');
+
+// connect to mongodb database which is called crackerjack
+mongoose.connect('mongodb://localhost/crackerjack');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -22,12 +31,16 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
+
+// to serve static files
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', routes);
-app.use('/users', users);
+app.use("/", routes);
+app.use("/login", login);
 app.use('/feed', feed);
 app.use("/publish", publish);
+app.use("/users", users);
+app.use("/posts", posts);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -36,7 +49,31 @@ app.use(function(req, res, next) {
   next(err);
 });
 
-// TODO: move these to the main route (aka controller)
+// Function used to generate unique user session IDs
+// Implementation found at: http://stackoverflow.com/a/8809472
+var genuuid = function(){
+    var d = new Date().getTime();
+    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = (d + Math.random()*16)%16 | 0;
+        d = Math.floor(d/16);
+        return (c=='x' ? r : (r&0x3|0x8)).toString(16);
+    });
+    return uuid;
+};
+
+// Create user session
+app.use(session({
+  genid: function() {
+    return genuuid(); // use UUIDs for session IDs
+  },
+  secret: "f4tk4t4u",
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: true }
+}));
+
+
+// TODO: delete below since we created a mongodb database
 
 // Initialize and populate imitation database.
 var database = require("./database.js");
@@ -55,7 +92,7 @@ database.createUser("tempuser",
     "tempuser@nomail.com",
     ["CrackerJack473"]);
 
-// end of code to be refactored and moved
+// end of code to be deleted
 
 // error handlers
 
