@@ -32,6 +32,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
+// Create user session
+app.use(session({
+	secret: "f4tk4t4u",
+	resave: true,
+	saveUninitialized: true
+}));
+
 // to serve static files
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -48,51 +55,6 @@ app.use(function(req, res, next) {
   err.status = 404;
   next(err);
 });
-
-// Function used to generate unique user session IDs
-// Implementation found at: http://stackoverflow.com/a/8809472
-var genuuid = function(){
-    var d = new Date().getTime();
-    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-        var r = (d + Math.random()*16)%16 | 0;
-        d = Math.floor(d/16);
-        return (c=='x' ? r : (r&0x3|0x8)).toString(16);
-    });
-    return uuid;
-};
-
-// Create user session
-app.use(session({
-  genid: function() {
-    return genuuid(); // use UUIDs for session IDs
-  },
-  secret: "f4tk4t4u",
-  resave: false,
-  saveUninitialized: true,
-  cookie: { secure: true }
-}));
-
-
-// TODO: delete below since we created a mongodb database
-
-// Initialize and populate imitation database.
-var database = require("./database.js");
-
-database.createGroup("CrackerJack473","CPSC 473 - Web Design Group");
-database.createGroup("videogames","Videogames Group"); // Placeholder
-database.createGroup("animals","Animals Group"); // Placeholder
-
-database.createUser("jmovius",
-    "955C4C87F9F8BA4CFC2F8888DB882B31954160FBFF7EB24DD81EBC0F71A21E6772368EA3ACB479BDA154995B3AB4AE14786CC6841C9C913572B2FA875A814DF1",
-    "jmovius@nomail.com",
-    ["CrackerJack473","videogames","animals"]);
-
-database.createUser("tempuser",
-    "7F5DB9C31A86321002D68796A99F5D7527F42F61B5CE116167C571411FA14B3EFD4904D5D0EF2E3428EB0BAE3D5F5C642BC9EBD650927791805A59B8C4E8FC5D",
-    "tempuser@nomail.com",
-    ["CrackerJack473"]);
-
-// end of code to be deleted
 
 // error handlers
 

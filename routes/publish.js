@@ -17,6 +17,10 @@ var params = {screen_name: "CrackerJack473"};
 // publish to twitter function, accepts the post id to be published as a parameter
 // can also check here if the current_user is an admin
 router.get("/:post_id", function(req, res, next) {
+  if(!req.session.isAuthorized) {
+    res.redirect("/login");
+  }
+  
   Post
   .findOne({_id: req.params.post_id})
   .populate("author")

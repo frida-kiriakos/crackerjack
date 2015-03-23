@@ -7,6 +7,9 @@ var User = require("../models/user");
 // if so render the login page if not logged in and render the main page if logged in
 /* GET home page. */
 router.get('/', function(req, res, next) {
+	if(!req.session.isAuthorized) {
+		res.redirect("/login");
+	}
 	
 	// the following query retrieves all posts and populates the author object to retrieve the owner of the post
 	Post
@@ -17,7 +20,10 @@ router.get('/', function(req, res, next) {
 			console.log(err);
 			res.render("index");
 		}
-		res.render('index', { posts: posts });
+		res.render('index', {
+    		username: req.session.username,
+			posts: posts
+		});
 	});
 	
 });

@@ -7,6 +7,10 @@ var User = require("../models/user");
 // takes form parameters tweetBody and username
 // creates the post, adds it to the user posts array then redirects to the index page
 router.post("/new", function(req,res,next) {
+	if(!req.session.isAuthorized) {
+		res.redirect("/login");
+	}
+	
 	console.log(req.body.tweetBody);
 	User.findOne({username: req.body.username}, function(err, user) {
 		if (err) {

@@ -11,6 +11,10 @@ var twitterClient = new Twitter(credentials);
 var params = {screen_name: "CrackerJack473"};
 
 router.get('/', function(req, res, next) {
+  if(!req.session.isAuthorized) {
+    res.redirect("/login");
+  }
+  
   twitterClient.get("statuses/user_timeline", params, function(error, tweets, response) {
     if (!error) {
       tweets.forEach(function (t) {

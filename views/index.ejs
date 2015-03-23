@@ -10,9 +10,9 @@
 		<header>
 			<div class = "header">
 				<nav>
-					<span>Username: CrackerJack</span>
+					<span>Username: <%= username %></span>
 					<!-- TODO: need a logout method to clear the user session and redirects to login page -->
-					<a href="/logout">Logout</a>
+					<a href="/login">Logout</a>
 				</nav>
 				<h1 class= "title">You vote it, We post it!</h1>
 			</div>
@@ -25,7 +25,7 @@
 	    			<form action="/posts/new" method="post">
 	    				<textarea name="tweetBody" class="input-text"></textarea>
 						<!-- TODO: this is hard coded for now, later we will use the session to get the username posting -->
-						<input name="username" type="hidden" value="frida"></input>
+						<input name="username" type="hidden" value=<%= username %>></input>
 						<button id="postTweet" type="submit" class="btn btn-primary">Post</button>
 					</form>
 				</p>	
