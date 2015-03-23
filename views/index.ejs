@@ -24,8 +24,6 @@
 				<p class="post">
 	    			<form action="/posts/new" method="post">
 	    				<textarea name="tweetBody" class="input-text"></textarea>
-						<!-- TODO: this is hard coded for now, later we will use the session to get the username posting -->
-						<input name="username" type="hidden" value=<%= username %>></input>
 						<button id="postTweet" type="submit" class="btn btn-primary">Post</button>
 					</form>
 				</p>	

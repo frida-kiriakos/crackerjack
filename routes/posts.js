@@ -12,7 +12,7 @@ router.post("/new", function(req,res,next) {
 	}
 	
 	console.log(req.body.tweetBody);
-	User.findOne({username: req.body.username}, function(err, user) {
+	User.findOne({username: req.session.username}, function(err, user) {
 		if (err) {
 			console.log("user not found");
 			res.redirect("/");
