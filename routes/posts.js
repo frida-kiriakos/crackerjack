@@ -13,9 +13,9 @@ router.post("/new", function(req,res,next) {
 	
 	console.log(req.body.tweetBody);
 	User.findOne({username: req.session.username}, function(err, user) {
-		if (err) {
-			console.log("user not found");
-			res.redirect("/");
+		if (err || req.body.tweetBody === "") {
+			console.log("User not found or empty post.");
+			return res.redirect("/");
 		}
 		console.log("user: " + user.username);
 
@@ -39,7 +39,7 @@ router.post("/new", function(req,res,next) {
 				console.log("post created successfully");
 			}
 			
-			res.redirect("/");
+			return res.redirect("/");
 		});
 
 	});	
@@ -87,14 +87,14 @@ router.get("/upvote/:id", function(req, res, next) {
 	.exec(function (err, post) {
 		if (err) {
 			console.log(err);
-			res.redirect("/");
+			return res.redirect("/");
 		}
 		// TODO: check first if current_user is in the upvoters list
 		post.upvotes = post.upvotes + 1;
 		// TODO: add the logged in user id to the list of upvoters
 		// post.upvoters.push(current_user._id);
 		post.save();
-		res.redirect("/");
+		return res.redirect("/");
 	});
 });
 
@@ -105,14 +105,14 @@ router.get("/downvote/:id", function(req, res, next) {
 	.exec(function (err, post) {
 		if (err) {
 			console.log(err);
-			res.redirect("/");
+			return res.redirect("/");
 		}
 		// TODO: check first if current_user is in the downvoters list
 		post.downvotes = post.downvotes + 1;
 		// TODO: add the logged in user id to the list of downvoters
 		// post.downvoters.push(current_user._id);
 		post.save();
-		res.redirect("/");
+		return res.redirect("/");
 	});
 });
 

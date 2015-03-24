@@ -27,17 +27,17 @@ router.get("/:post_id", function(req, res, next) {
   .exec(function (err, post ) {
     if (err) {
       console.log(err);
-      res.redirect("/");
+      return res.redirect("/");
     }
 
     twitterClient.post("statuses/update", {status: post.body},  function(error, t, response) {
       if (!error) {
         post.published = true;
         post.save();
-        res.redirect("/");
+        return res.redirect("/");
       } else {
         console.log("error: " + JSON.stringify(error));
-        res.redirect("/");
+        return res.redirect("/");
       }
       
     });
