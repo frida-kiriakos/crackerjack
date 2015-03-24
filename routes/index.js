@@ -8,7 +8,7 @@ var User = require("../models/user");
 /* GET home page. */
 router.get('/', function(req, res, next) {
 	if(!req.session.isAuthorized) {
-		res.redirect("/login");
+		return res.redirect("/login");
 	}
 	
 	// the following query retrieves all posts and populates the author object to retrieve the owner of the post

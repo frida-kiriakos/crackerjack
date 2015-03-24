@@ -8,7 +8,7 @@ var User = require("../models/user");
 // creates the post, adds it to the user posts array then redirects to the index page
 router.post("/new", function(req,res,next) {
 	if(!req.session.isAuthorized) {
-		res.redirect("/login");
+		return res.redirect("/login");
 	}
 	
 	console.log(req.body.tweetBody);

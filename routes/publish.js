@@ -18,7 +18,7 @@ var params = {screen_name: "CrackerJack473"};
 // can also check here if the current_user is an admin
 router.get("/:post_id", function(req, res, next) {
   if(!req.session.isAuthorized) {
-    res.redirect("/login");
+    return res.redirect("/login");
   }
   
   Post

@@ -17,7 +17,7 @@ router.post('/', function (req, res, next) {
 		if (err || !user) {
 			req.session.isAuthorized = false;
 			console.log("User Not Found - isAuthorized: " + req.session.isAuthorized);
-			res.redirect("/login");
+			return res.redirect("/login");
 		} else {
 			if(user.password === req.body.password) {
 				req.session.isAuthorized = true;
@@ -25,11 +25,11 @@ router.post('/', function (req, res, next) {
 				//console.log("login - user.username: " + user.username);
 				//console.log("login - session.username: " + req.session.username);
 				console.log("Success - isAuthorized: " + req.session.isAuthorized);
-				res.redirect("/");
+				return res.redirect("/");
 			} else {
 				req.session.isAuthorized = false;
 				console.log("Incorrect Password - isAuthorized: " + req.session.isAuthorized);
-				res.redirect("/login");
+				return res.redirect("/login");
 			}
 		}
 	});
