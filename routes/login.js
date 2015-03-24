@@ -21,6 +21,7 @@ router.post('/', function (req, res, next) {
 		} else {
 			if(user.password === req.body.password) {
 				req.session.isAuthorized = true;
+				req.session.isAdmin = user.admin;
 				req.session.username = user.username;
 				//console.log("login - user.username: " + user.username);
 				//console.log("login - session.username: " + req.session.username);

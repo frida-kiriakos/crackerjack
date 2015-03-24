@@ -22,6 +22,7 @@ router.get('/', function(req, res, next) {
 		}
 		res.render('index', {
     		username: req.session.username,
+    		isAdmin: req.session.isAdmin,
 			posts: posts
 		});
 	});
