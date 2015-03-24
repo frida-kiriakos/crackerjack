@@ -23,8 +23,10 @@
 				<h2> Add the tweet you want to post here so your group can vote on it </h2>
 				<p class="post">
 	    			<form action="/posts/new" method="post">
-	    				<textarea name="tweetBody" class="input-text"></textarea>
+                    	<div class="char-len"></div>
+	    				<textarea name="tweetBody" class="input-text form-control"></textarea>
 						<button id="postTweet" type="submit" class="btn btn-primary">Post</button>
+						<div class="input-buttons"></div>
 					</form>
 				</p>	
     		</div>
