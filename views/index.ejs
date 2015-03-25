@@ -26,8 +26,8 @@
 						<div class="char-len"></div>
 	    				<textarea name="tweetBody" class="input-text form-control"></textarea>
 						<button id="postTweet" type="submit" class="btn btn-primary">Post</button>
-						<div class="input-buttons"></div>
 					</form>
+					<div class="input-buttons"></div>
 				</p>	
     		</div>
 <!-- I noticed that it takes a while for the widget to update and it also slows down the page, we should consider using stream twitter API or feed API under routes -->
@@ -49,9 +49,11 @@
 								</p>
 								<!-- TODO: need to check if logged in user is not the author of the post, to show the buttons or hide them-->
 								<!-- TODO: need to send the logged in user id or session -->
-								<a href="/posts/upvote/<%= post._id%>" class="btn btn-default"><span class="glyphicon glyphicon-arrow-up"></span></a>
+								<% if(post.author.username !== username) { %>
+									<a href="/posts/upvote/<%= post._id%>" class="btn btn-default"><span class="glyphicon glyphicon-arrow-up"></span></a>
 
-								<a href="/posts/downvote/<%= post._id%>" class="btn btn-default"><span class="glyphicon glyphicon-arrow-down"></span></a>
+									<a href="/posts/downvote/<%= post._id%>" class="btn btn-default"><span class="glyphicon glyphicon-arrow-down"></span></a>
+								<% } %>
 								<% if(isAdmin) { %>
 									<% if (post.upvotes - post.downvotes >= 5) { %>
 										<a href="/publish/<%= post._id%>" class="btn btn-default">Publish to Twitter</a>
