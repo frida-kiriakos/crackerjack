@@ -1,26 +1,27 @@
-html, main{
-	background: lightblue;
-}
 
 header{
-	float: left;
-	background: blue;
- 	padding-bottom: 50px;
- 	border: 2px solid gray;
- 	width: 100%
-
+ 	width: 100%;
+ 	font-family: 'Bangers', sans-serif;
+ 
 }
+
+body{
+	background: linear-gradient(#66cccc, #FFFFFF);
+}
+
 main .login {
+	font-family: 'Bangers', sans-serif;
 	float: right;
-	border: 2px solid black;
 	width: auto;
-	padding-left: 50px;
 	padding-right: 300px;
+	padding-top: 150px;
+
 	
 }
 
 main .description{
-	border: 2px solid gray;
+	font-family: 'Bangers', sans-serif;
+	padding: 100px;
 	float: left;
 	width: 50%
 }
