@@ -1,0 +1,43 @@
+ body .title{
+  float: left;
+  width: 570px;
+  color: #ff0000;
+  font-size: 300%;
+  padding-top: 30px;
+  padding-bottom: 50px;
+}
+body {
+  background: #f9e933;
+}
+main .unpublished{
+	float: right;
+	border: 5px solid black;
+}
+
+main .published{
+	float: left;
+	width: 285px;
+	border: 5px solid black;
+}
+header nav {
+  font-family: 'Droid Sans', sans-serif;
+  float: right;
+  color: #CC0000;
+  padding-top: 30px;
+  padding-bottom: 50px;
+}
+
+header, main, footer {
+  min-width: 855px;
+}
+
+header {
+  background: white;
+  overflow: auto;
+  border-bottom: 2px solid lightgray;
+
+}
+
+.unpublished p{
+	border-bottom: 2px solid lightgray;
+}

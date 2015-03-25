@@ -1,0 +1,26 @@
+html, main{
+	background: lightblue;
+}
+
+header{
+	float: left;
+	background: blue;
+ 	padding-bottom: 50px;
+ 	border: 2px solid gray;
+ 	width: 100%
+
+}
+main .login {
+	float: right;
+	border: 2px solid black;
+	width: auto;
+	padding-left: 50px;
+	padding-right: 300px;
+	
+}
+
+main .description{
+	border: 2px solid gray;
+	float: left;
+	width: 50%
+}

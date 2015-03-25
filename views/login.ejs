@@ -2,19 +2,33 @@
 <html>
 	<head>
 		<title>CrackerJack Log-in</title>
+		<link href="stylesheets/login.css" rel="stylesheet" type="text/css">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 	</head>
-
 	<body>
-		<h1>CrackerJack Site</h1>
-		<h2 class = "userName">Username</h2>
-		<form action = "/login" method ="post">
-			<input name="username"></input>
-			<h2 class="password">Password</h2>
-			<input name="password" type="password"></input>
-			<div>
-				<button type ="Log-in">Log-in</button>
+			<header>
+				<h1>CrackerJack Site</h1>
+			</header>
+		<main>
+			<div class = "login">
+				<h2 class = "userName">Username</h2>
+				<form action = "/login" method ="post">
+					<input name="username"></input>
+					<h2 class="password">Password</h2>
+					<input name="password" type="password"></input>
+					<div>
+						<button type ="Log-in">Log-in</button>
+					</div>
+				</form>
 			</div>
-			
-		</form>
+
+			<div class = "description">
+				<h2>
+					A community-based Twitter gateway, allows group of users to post to Twitter as a group. Users can submit post and update unpublished post, but will not be posted to Twitter until it reach the highest vote from all members and also approved by the admin. Users can submit new updates and vote on unpublished updates up or down. 
+
+				</h2>
+			</div>	
+		</main>
 	</body>
+	
 </html>

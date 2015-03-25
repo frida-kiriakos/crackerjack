@@ -6,6 +6,10 @@
 			);
 }*/
 
+body {
+  background: blue;
+}
+
 body{
 	background: #66cccc;
     margin-top: 25px;
