@@ -11,10 +11,14 @@ router.post("/new", function(req,res,next) {
 		return res.redirect("/login");
 	}
 	
-	console.log(req.body.tweetBody);
 	User.findOne({username: req.session.username}, function(err, user) {
 		if (err || req.body.tweetBody === "") {
 			console.log("User not found or empty post.");
+			return res.redirect("/");
+		} else if (req.body.tweetBody.length > 140) {
+			// TODO: we need to retain the tweetBody after we return from the error, or add client side validation 
+			console.log("tweet body is greater than 140 characters");
+			req.session.tweetError = "Tweet body is greater than 140 characters";
 			return res.redirect("/");
 		}
 		console.log("user: " + user.username);

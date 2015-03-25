@@ -24,6 +24,14 @@ var users = {"frida": {
 				email:"test@nomail.com",
 				groupList:["CrackerJack473"],
 				admin: false
+			},
+			"denice": {
+				_id:3,
+				username:"denice",
+				password:"test123",
+				email:"test@nomail.com",
+				groupList:["CrackerJack473"],
+				admin: true
 			}
 };
 
