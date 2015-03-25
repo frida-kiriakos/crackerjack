@@ -60,8 +60,7 @@
 									<% } %>
 										- Votes: <%= post.upvotes - post.downvotes%>
 								</p>
-								<!-- TODO: need to check if logged in user is not the author of the post, to show the buttons or hide them-->
-								<!-- TODO: need to send the logged in user id or session -->
+								
 								<% if(post.author.username !== username) { %>
 									<a href="/posts/upvote/<%= post._id%>" class="btn btn-default"><span class="glyphicon glyphicon-arrow-up"></span></a>
 

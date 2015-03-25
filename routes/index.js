@@ -12,9 +12,11 @@ router.get('/', function(req, res, next) {
 	}
 	
 	// the following query retrieves all posts and populates the author object to retrieve the owner of the post
+	// TODO: sort the posts by number of votes
 	Post
 	.find()
 	.populate("author")
+	.sort("-upvotes")
 	.exec(function (err, posts) {
 		if (err) {
 			console.log(err);
