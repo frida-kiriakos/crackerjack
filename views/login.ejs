@@ -2,19 +2,46 @@
 <html>
 	<head>
 		<title>CrackerJack Log-in</title>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width initial-scale=1">
+		<link href="stylesheets/reset.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+        <link href="http://fonts.googleapis.com/css?family=Bangers"rel="stylesheet" type="text/css">
+        <link rel="stylesheet" type="text/css" href="stylesheets/login.css">
 	</head>
-
 	<body>
-		<h1>CrackerJack Site</h1>
-		<h2 class = "userName">Username</h2>
-		<form action = "/login" method ="post">
-			<input name="username"></input>
-			<h2 class="password">Password</h2>
-			<input name="password" type="password"></input>
-			<div>
-				<button type ="Log-in">Log-in</button>
+		<header>
+			<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+				<div class="navbar-header">
+					<a class = "navbar-brand" href="#">Crackerjack</a>
+				</div>
+			</nav>
+		</header>
+
+		<main>
+			<div class = "login">
+				<h2 class = "userName">Username</h2>
+				<form action = "/login" method ="post">
+					<input name="username"></input>
+					<h2 class="password">Password</h2>
+					<input name="password" type="password"></input>
+					<div>
+						<button type ="Log-in">Log-in</button>
+					</div>
+				</form>
 			</div>
-			
-		</form>
+
+			<div class = "description">
+				<h2>
+					A community-based Twitter gateway, allows group of users to post to Twitter as a group. Users can submit post and update unpublished post, but will not be posted to Twitter until it reach the highest vote from all members and also approved by the admin. Users can submit new updates and vote on unpublished updates up or down. 
+
+				</h2>
+			</div>	
+		</main>
+        <script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
+        <script src="javascripts/app.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 	</body>
+	
 </html>
