@@ -16,7 +16,7 @@ router.get('/', function(req, res, next) {
 	Post
 	.find()
 	.populate("author")
-	.sort("-upvotes")
+	.sort("upvotes")
 	.exec(function (err, posts) {
 		if (err) {
 			console.log(err);

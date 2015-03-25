@@ -7,13 +7,13 @@
 		<meta name="viewport" content="width=device-width initial-scale=1">
 		<link href="stylesheets/reset.css" rel="stylesheet" type="text/css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-        <link href="http://fonts.googleapis.com/css?family=Bangers"rel="stylesheet" type="text/css">
+        <link href="http://fonts.googleapis.com/css?family=Bangers" rel="stylesheet" type="text/css">
         <link rel="stylesheet" type="text/css" href="stylesheets/style.css">
 	</head>
 	<body>
 		<header>
 			<div class = "header">
-				<h1>You vote it, We post it!</h1>
+				<h1>You vote, We post!</h1>
 				<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
 					<div class="navbar-header">
 						<a class = "navbar-brand" href="#">Crackerjack</a>
@@ -33,19 +33,21 @@
 
 		<main>
 			<div class ="tweetsection">
-				<h2> Add the tweet you want to post here so your group can vote on it </h2>
 				<p class="post">
 	    			<form action="/posts/new" method="post">
 						<div class="char-len"></div>
-	    				<textarea name="tweetBody" class="input-text form-control"></textarea>
+						<div class="form-group">
+							<label for="tweetBody">Add the tweet you want to post here so your group can vote on it</label>
+	    					<textarea id="tweetBody" name="tweetBody" class="input-text form-control"></textarea>
+	    				</div>
 						<button id="postTweet" type="submit" class="btn btn-primary">Post</button>
 					</form>
-					<div class="input-buttons"></div>
+					<!-- <div class="input-buttons"></div> -->
 				</p>	
     		</div>
 <!-- I noticed that it takes a while for the widget to update and it also slows down the page, we should consider using stream twitter API or feed API under routes -->
     		<div class ="published">
-				<a class="twitter-timeline" href="https://twitter.com/CrackerJack473" data-widget-id="575783346589974529"data-chrome = "nofooter noscrollbar" data-tweet-limit ="5">Tweets by @CrackerJack473</a>
+				<a class="twitter-timeline" href="https://twitter.com/CrackerJack473" data-widget-id="575783346589974529" data-chrome = "nofooter noscrollbar" data-tweet-limit ="5">Tweets by @CrackerJack473</a>
 			</div>
 
 			<div class ="unpublished">

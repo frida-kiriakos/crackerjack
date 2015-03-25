@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>CrackerJack Log-in</title>
+		<title>Login to CrackerJack</title>
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width initial-scale=1">
 		<link href="stylesheets/reset.css" rel="stylesheet" type="text/css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-        <link href="http://fonts.googleapis.com/css?family=Bangers"rel="stylesheet" type="text/css">
+        <link href="http://fonts.googleapis.com/css?family=Bangers" rel="stylesheet" type="text/css">
         <link rel="stylesheet" type="text/css" href="stylesheets/login.css">
 	</head>
 	<body>
@@ -21,21 +21,25 @@
 
 		<main>
 			<div class = "login">
-				<h2 class = "userName">Username</h2>
 				<form action = "/login" method ="post">
-					<input name="username"></input>
-					<h2 class="password">Password</h2>
-					<input name="password" type="password"></input>
-					<div>
-						<button type ="Log-in">Login</button>
+					<div class="form-group">
+						<label for="username">Username</label>
+						<input class="form-control" id="username" name="username" placeholder="Enter your username" type="text">
 					</div>
+					<div class="form-group">
+						<label for="password">Password</label>
+						<input id="password" class="form-control" name="password" type="password" placeholder="Enter password">
+					</div>
+					
+					<button class="btn btn-primary" type ="submit">Login</button>
 				</form>
 			</div>
 
 			<div class = "description">
 				<h2>
-					A community-based Twitter gateway, allows group of users to post to Twitter as a group. Users can submit post and update unpublished post, but will not be posted to Twitter until it reach the highest vote from all members and also approved by the admin. Users can submit new updates and vote on unpublished updates up or down. 
-
+					Our portal allows you to post to Twitter as a group.
+					Post an update, your group votes on it and decide to publish it to Twitter.
+					Login to start posting and check out pending and published Tweets.
 				</h2>
 			</div>	
 		</main>
