@@ -1,42 +1,3 @@
-<<<<<<< HEAD
-
-/*.gradient {
-	background: 
-		linear-gradient(
-			#3399F, #33CCFF
-			);
-}*/
-
-body {
-  background: blue;
-}
-
-body{
-	background: #66cccc;
-    margin-top: 25px;
-    margin-bottom: 25px;
-    margin-right: 150px;
-    margin-left: 50px;
-}
-
-main .unpublished{
-	float:right;
-	width: 50%;
-}
-
-main .published{
-	float:left;
-	width: 50%;
-}
-=======
-
-/*.gradient {
-	background: 
-		linear-gradient(
-			#3399F, #33CCFF
-			);
-}*/
-
 body{
 	background: linear-gradient(#66cccc, #FFFFFF);
     margin-top: 25px;
@@ -72,4 +33,3 @@ header {
 main .tweetsection {
 	font-family: 'Bangers', sans-serif;
 }
->>>>>>> fababd254ef335e98363972e6ddac0bcf05f78a8
