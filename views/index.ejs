@@ -10,9 +10,9 @@
 		<header>
 			<div class = "header">
 				<nav>
-					<span>Username: CrackerJack</span>
+					<span>Username: <%= username %></span>
 					<!-- TODO: need a logout method to clear the user session and redirects to login page -->
-					<a href="/logout">Logout</a>
+					<a href="/login">Logout</a>
 				</nav>
 				<h1 class= "title">You vote it, We post it!</h1>
 			</div>
@@ -23,10 +23,10 @@
 				<h2> Add the tweet you want to post here so your group can vote on it </h2>
 				<p class="post">
 	    			<form action="/posts/new" method="post">
-	    				<textarea name="tweetBody" class="input-text"></textarea>
-						<!-- TODO: this is hard coded for now, later we will use the session to get the username posting -->
-						<input name="username" type="hidden" value="frida"></input>
+						<div class="char-len"></div>
+	    				<textarea name="tweetBody" class="input-text form-control"></textarea>
 						<button id="postTweet" type="submit" class="btn btn-primary">Post</button>
+						<div class="input-buttons"></div>
 					</form>
 				</p>	
     		</div>
@@ -52,10 +52,10 @@
 								<a href="/posts/upvote/<%= post._id%>" class="btn btn-default"><span class="glyphicon glyphicon-arrow-up"></span></a>
 
 								<a href="/posts/downvote/<%= post._id%>" class="btn btn-default"><span class="glyphicon glyphicon-arrow-down"></span></a>
-								<!-- TODO: check if logged in user is an admin, show publish button -->
-								<!-- TODO: discuss the criteria for publishing -->
-								<% if (post.upvotes - post.downvotes >= 5) { %>
-									<a href="/publish/<%= post._id%>" class="btn btn-default">Publish to Twitter</a>
+								<% if(isAdmin) { %>
+									<% if (post.upvotes - post.downvotes >= 5) { %>
+										<a href="/publish/<%= post._id%>" class="btn btn-default">Publish to Twitter</a>
+									<% } %>
 								<% } %>
 							<% } %>				
 						<%});%>

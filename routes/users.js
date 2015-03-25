@@ -16,15 +16,24 @@ var users = {"frida": {
 				password:"test123",
 				email:"jmovius@nomail.com",
 				groupList:["CrackerJack473"],
-				admin: true }
-			};
+				admin: true },
+			"test": {
+				_id:2,
+				username:"test",
+				password:"test123",
+				email:"test@nomail.com",
+				groupList:["CrackerJack473"],
+				admin: false
+			}
+};
+
 var groups = {"CrackerJack473": {
 				groupname: "CrackerJack473", 
 				displayname: "CPSC 473 - Web Design Group"},
 			"videogames": {
 				groupname: "videogames", 
 				displayname: "Videogames Group"},
-			};
+};
 
 router.get("/new/:username", function(req, res, next) {
 	var newuser = new User(users[req.params.username]);
