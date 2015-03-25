@@ -2,19 +2,32 @@
 <html>
 	<head>
 		<title>Welcome to Cracker Jack</title>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width initial-scale=1">
 		<link href="stylesheets/reset.css" rel="stylesheet" type="text/css">
-		<link rel="stylesheet" type="text/css" href="stylesheets/style.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+        <link href="http://fonts.googleapis.com/css?family=Bangers"rel="stylesheet" type="text/css">
+        <link rel="stylesheet" type="text/css" href="stylesheets/style.css">
 	</head>
 	<body>
 		<header>
 			<div class = "header">
-				<nav>
-					<span>Username: <%= username %></span>
-					<!-- TODO: need a logout method to clear the user session and redirects to login page -->
-					<a href="/login">Logout</a>
+				<h1>You vote it, We post it!</h1>
+				<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+					<div class="navbar-header">
+						<a class = "navbar-brand" href="#">Crackerjack</a>
+					</div>
+					<div class="navbar-collapse collapse">
+						<ul class="nav navbar-nav">
+							<li class="active"><a href="#"> Username: <%= username %></a></li>
+							<!-- <li><a href="#">Account</a></li>
+							<li><a href="#">Edit</a></li> -->
+							<li><a href="/login">Logout</a></li>
+						</ul>
+					</div>
 				</nav>
-				<h1 class= "title">You vote it, We post it!</h1>
+				
 			</div>
 		</header>
 
@@ -67,5 +80,6 @@
 		</main>
         <script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
         <script src="javascripts/app.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 	</body>
 </html>	
