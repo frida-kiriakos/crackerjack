@@ -8,6 +8,7 @@
 		<link href="stylesheets/reset.css" rel="stylesheet" type="text/css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
         <link href="http://fonts.googleapis.com/css?family=Bangers" rel="stylesheet" type="text/css">
+        <link href='http://fonts.googleapis.com/css?family=Slabo+27px' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" type="text/css" href="stylesheets/style.css">
 	</head>
 	<body>
@@ -37,8 +38,8 @@
 	    			<form action="/posts/new" method="post">
 						<div class="char-len"></div>
 						<div class="form-group">
-							<label for="tweetBody"> Add the tweet you want to post here so your group can vote on it. </label>
-							<p>Note that you can shorten your post if its length is greater than 140 characters but you need to make sure that the final post is within the 140 chars limit</p>
+							<p class="tweetBody"> Add the tweet you want to post here so your group can vote on it. </label>
+							<p class ="note">Note that you can shorten your post if its length is greater than 140 characters but you need to make sure that the final post is within the 140 chars limit</p>
 	    					<textarea id="tweetBody" name="tweetBody" class="input-text form-control"></textarea>
 	    				</div>
 	    				<!-- validate that the length of post is 140 chars, this validation is performed by the server, can also do a similar one on client side -->
