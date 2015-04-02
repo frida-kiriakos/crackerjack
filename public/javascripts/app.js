@@ -9,7 +9,7 @@ var main = function () {
 	$.getJSON("http://localhost:3000/posts", function(posts) {
 		posts.forEach(function(post) {
 			var $p = $("<p>");
-			$p.text(post.body + " - By: " + post.author.username);
+			$p.text(post.body + " - Post By: " + post.author.username);
 			// replace this with the correct tag ID
 			// $("#pendingTweets").append($p);
 		});
