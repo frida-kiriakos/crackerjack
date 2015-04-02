@@ -58,7 +58,7 @@ var main = function () {
 		if($inputText.val().length > 0) {
 			revertInput = $inputText.val();
 
-			inputUrl = "http://www.feathr.it/api?text=" + $inputText.val().replace(/ /g, '%20');
+			inputUrl = "http://www.feathr.it/api?symbol=0&text=" + $inputText.val().replace(/ /g, '%20');
 
 			// Feather.it API Call
 			$.getJSON(inputUrl, function (response) {
