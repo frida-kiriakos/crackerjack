@@ -21,15 +21,30 @@ main .published{
 header {
 	font-family: 'Bangers', sans-serif;
 }
+div.input-buttons, div.char-len, button{
+	font-family: 'Bangers', sans-serif;
+	font-size: 1.2em;
+}
 
-.header h1 {
+div h1.content {
 	font-family: 'Bangers', sans-serif;
 }
 
 .unpublished h1 {
-	font-family: 'Bangers', sans-serif;
+	font-family: 'Slabo 27px', serif;
+	border-bottom: 3px solid grey;
 }
 
+p.tweetBody, p.note{
+	font-family: 'Slabo 27px', serif;
+	font-size: 1.1em;
+}
+p.post{
+	font-family: 'Slabo 27px', serif;
+	border-bottom: 1px solid grey;
+	font-size: 1.1em;
+}
 main .tweetsection {
-	font-family: 'Bangers', sans-serif;
+	font-family: 'Slabo 27px', serif;
+
 }
