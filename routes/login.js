@@ -11,7 +11,7 @@ router.get('/', function (req, res, next) {
 
 /* POST login form. */
 router.post('/', function (req, res, next) {
-	console.log("Entered  - UN: " + req.body.username + "; PW: " + req.body.password + ";");
+	// console.log("Entered  - UN: " + req.body.username + "; PW: " + req.body.password + ";");
 
 	User.findOne({username: req.body.username}, function(err, user) {
 		if (err || !user) {
@@ -25,7 +25,7 @@ router.post('/', function (req, res, next) {
 				req.session.username = user.username;
 				//console.log("login - user.username: " + user.username);
 				//console.log("login - session.username: " + req.session.username);
-				console.log("Success - isAuthorized: " + req.session.isAuthorized);
+				// console.log("Success - isAuthorized: " + req.session.isAuthorized);
 				return res.redirect("/");
 			} else {
 				req.session.isAuthorized = false;

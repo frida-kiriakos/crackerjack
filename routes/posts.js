@@ -87,36 +87,67 @@ router.get("/:username", function(req,res,next) {
 router.get("/upvote/:id", function(req, res, next) {
 	Post
 	.findOne({_id: req.params.id})
-	.populate("author")
+	// .populate("author")
 	.exec(function (err, post) {
 		if (err) {
 			console.log(err);
 			return res.redirect("/");
 		}
-		// TODO: check first if current_user is in the upvoters list
-		post.upvotes = post.upvotes + 1;
-		// TODO: add the logged in user id to the list of upvoters
-		// post.upvoters.push(current_user._id);
-		post.save();
-		return res.redirect("/");
+
+		// check if the logged in user has already voted on the post
+		User
+		.findOne({username: req.session.username})
+		.exec(function(err, user) {
+			if (err) {
+				console.log(err);
+				return res.redirect("/");
+			} else {
+				if (post.upvoters.indexOf(user._id) > -1) {
+					// user already voted
+					console.log("user already upvoted");
+					return res.redirect("/");
+				} else {
+					post.upvotes = post.upvotes + 1;
+					post.upvoters.push(user._id);
+					post.save();
+					return res.redirect("/");
+				}
+			}
+		});
+		
 	});
 });
 
+// voting can be refactored to reduce redundancy
 router.get("/downvote/:id", function(req, res, next) {
 	Post
 	.findOne({_id: req.params.id})
-	.populate("author")
+	// .populate("author")
 	.exec(function (err, post) {
 		if (err) {
 			console.log(err);
 			return res.redirect("/");
 		}
-		// TODO: check first if current_user is in the downvoters list
-		post.downvotes = post.downvotes + 1;
-		// TODO: add the logged in user id to the list of downvoters
-		// post.downvoters.push(current_user._id);
-		post.save();
-		return res.redirect("/");
+		// check if the logged in user has already voted on the post
+		User
+		.findOne({username: req.session.username})
+		.exec(function(err, user) {
+			if (err) {
+				console.log(err);
+				return res.redirect("/");
+			} else {
+				if (post.downvoters.indexOf(user._id) > -1) {
+					// user already voted
+					console.log("user already downvoted");
+					return res.redirect("/");
+				} else {
+					post.downvotes = post.downvotes + 1;
+					post.downvoters.push(user._id);
+					post.save();
+					return res.redirect("/");
+				}
+			}
+		});
 	});
 });
 

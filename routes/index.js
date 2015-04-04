@@ -23,7 +23,7 @@ router.get('/', function(req, res, next) {
 			res.render("index");
 		}
 		res.render('index', {
-			tweetError: req.session.tweetError,
+			session: req.session,
     		username: req.session.username,
     		isAdmin: req.session.isAdmin,
 			posts: posts

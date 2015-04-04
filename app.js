@@ -6,8 +6,8 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
 
-var routes = require('./routes/index');
-var login = require('./routes/login');
+var routes = require("./routes/index");
+var login = require("./routes/login");
 var feed = require("./routes/feed");
 var publish = require("./routes/publish");
 var users = require("./routes/users");
@@ -44,14 +44,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use("/", routes);
 app.use("/login", login);
-app.use('/feed', feed);
+app.use("/feed", feed);
 app.use("/publish", publish);
 app.use("/users", users);
 app.use("/posts", posts);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  var err = new Error('Not Found');
+  var err = new Error("Not Found");
   err.status = 404;
   next(err);
 });

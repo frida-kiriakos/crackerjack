@@ -43,8 +43,9 @@
 	    					<textarea id="tweetBody" name="tweetBody" class="input-text form-control"></textarea>
 	    				</div>
 	    				<!-- validate that the length of post is 140 chars, this validation is performed by the server, can also do a similar one on client side -->
-	    				<% if (tweetError) { %>
-	    					<div class="alert alert-danger"><%= tweetError%></div>
+	    				<% if (session.tweetError) { %>
+	    					<div class="alert alert-danger"><%= session.tweetError%></div>
+	    					<% session.tweetError = ""; %>
 	    				<% } %>
 						<button id="postTweet" type="submit" class="btn btn-primary">Post</button>
 					</form>
