@@ -1,3 +1,7 @@
+#!/usr/bin/env node
+/* jshint node: true, curly: true, eqeqeq: true, forin: true, immed: true, indent: 4, latedef: true, newcap: true, nonew: true, quotmark: double, strict: true, undef: true, unused: true */
+"use strict";
+
 var express = require("express");
 var router = express.Router();
 var Post = require("../models/post");
@@ -6,7 +10,7 @@ var User = require("../models/user");
 // create a new post, called using /posts/new
 // takes form parameters tweetBody and username
 // creates the post, adds it to the user posts array then redirects to the index page
-router.post("/new", function(req,res,next) {
+router.post("/new", function(req,res) {
 	if(!req.session.isAuthorized) {
 		return res.redirect("/login");
 	}
@@ -51,7 +55,7 @@ router.post("/new", function(req,res,next) {
 
 // get all posts, called by using /posts
 // returns posts array and user object can be accessed using post.author
-router.get("/", function(req,res,next) {
+router.get("/", function(req,res) {
 	Post
 	.find()
 	.populate("author")
@@ -68,7 +72,7 @@ router.get("/", function(req,res,next) {
 // get posts for a certain user, takes the username as a parameter: example call: /posts/frida
 // returns the user object
 // the user's post can be retrieved using user.posts
-router.get("/:username", function(req,res,next) {
+router.get("/:username", function(req,res ) {
 	// the following query retrieves the posts by a certain user
 	User
 	.findOne({username: req.params.username})
@@ -87,7 +91,7 @@ router.get("/:username", function(req,res,next) {
 // edit post api, takes parameters post_id and post_body as the post data
 // in the AJAX request, use data: {post_id: <the id of the post>, post_body: <the updated post>}
 // tested with curl request curl --silent --request POST --data "post_id=551379d920a97ea82098b1be&post_body=testing edit" localhost:3000/posts/edit | python -m json.tool
-router.post("/edit", function(req, res, next) {
+router.post("/edit", function(req, res ) {
 	Post
 	.findOne({_id: req.body.post_id})
 	.exec(function (err, post) {
@@ -100,18 +104,10 @@ router.post("/edit", function(req, res, next) {
 			return res.json("success");
 		}
 
-		// User
-		// .findOne({username: req.session.username})
-		// .exec(function(err, user) {
-		// 	if (err) {
-		// 		console.log(err);
-		// 		return res.redirect("/");
-		// 	} else {}
-		// });
 	});
 });
 
-router.get("/upvote/:id", function(req, res, next) {
+router.get("/upvote/:id", function(req, res ) {
 	Post
 	.findOne({_id: req.params.id})
 	// .populate("author")
@@ -146,7 +142,7 @@ router.get("/upvote/:id", function(req, res, next) {
 });
 
 // voting can be refactored to reduce redundancy
-router.get("/downvote/:id", function(req, res, next) {
+router.get("/downvote/:id", function(req, res ) {
 	Post
 	.findOne({_id: req.params.id})
 	// .populate("author")

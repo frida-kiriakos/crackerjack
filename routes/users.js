@@ -1,3 +1,7 @@
+#!/usr/bin/env node
+/* jshint node: true, curly: true, eqeqeq: true, forin: true, immed: true, indent: 4, latedef: true, newcap: true, nonew: true, quotmark: double, strict: true, undef: true, unused: true */
+"use strict";
+
 var express = require("express");
 var router = express.Router();
 var User = require("../models/user");
@@ -43,7 +47,7 @@ var groups = {"CrackerJack473": {
 				displayname: "Videogames Group"},
 };
 
-router.get("/new/:username", function(req, res, next) {
+router.get("/new/:username", function(req, res) {
 	var newuser = new User(users[req.params.username]);
 
 	newuser.save(function(err) {
@@ -57,21 +61,25 @@ router.get("/new/:username", function(req, res, next) {
 	
 });
 
-router.get('/:username', function(req,res,next){
+router.get("/:username", function(req,res) {
 	User.findOne({username: req.params.username}, function(err, user) {
-		if (err) res.send("user not found");
+		if (err) { 
+			res.send("user not found");
+		}
 		res.send(user);
 	});
 });
 
-router.get('/delete/:id', function(req,res,next){
+router.get("/delete/:id", function(req,res){
 	User.remove({_id: req.params.id}, function(err) {
-		if (err) res.send("user not found");
+		if (err) {
+			res.send("user not found");
+		}
 		res.send("user deleted successfully");
 	});
 });
 
-router.get("/create_group/:group", function(req, res, next) {
+router.get("/create_group/:group", function(req, res) {
 	
 	var group = new Group(groups[req.params.group]);
 

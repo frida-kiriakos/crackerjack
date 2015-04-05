@@ -1,3 +1,4 @@
+// deprecated implementation of our database
 
 /* // This specific setup allows the "database" to pull the data of a user VERY easily. For example,
  * // to pull up my user account information under my login username "jmovius", use the following:
