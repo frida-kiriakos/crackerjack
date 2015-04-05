@@ -84,6 +84,33 @@ router.get("/:username", function(req,res,next) {
 	
 });
 
+// edit post api, takes parameters post_id and post_body as the post data
+// in the AJAX request, use data: {post_id: <the id of the post>, post_body: <the updated post>}
+// tested with curl request curl --silent --request POST --data "post_id=551379d920a97ea82098b1be&post_body=testing edit" localhost:3000/posts/edit | python -m json.tool
+router.post("/edit", function(req, res, next) {
+	Post
+	.findOne({_id: req.body.post_id})
+	.exec(function (err, post) {
+		if (err) {
+			console.log(err);
+			return res.json("error");
+		} else {
+			post.body = req.body.post_body;
+			post.save();
+			return res.json("success");
+		}
+
+		// User
+		// .findOne({username: req.session.username})
+		// .exec(function(err, user) {
+		// 	if (err) {
+		// 		console.log(err);
+		// 		return res.redirect("/");
+		// 	} else {}
+		// });
+	});
+});
+
 router.get("/upvote/:id", function(req, res, next) {
 	Post
 	.findOne({_id: req.params.id})
