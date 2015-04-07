@@ -3,19 +3,70 @@
 var main = function () {
 	"use strict";
 
+	var _maxLength = 250,
+		revertInput = "",
+		inputUrl = "",
+		originalLen = 0,
+		$charLen = $("div .char-len"),
+		$inputText = $("textarea.input-text").attr("maxlength",_maxLength).attr("placeholder","Add the tweet you want to post here, so your group can vote on it. (NOTE: Posts must meet Twitter's 140 Character limit)"),
+		$btn_revert = $("<button>").text("Revert").attr("class", "btn btn-default").attr("disabled",true),
+		$btn_shorten = $("<button>").text("Shorten").attr("class", "btn btn-default"),
+		$btn_post = $("<button>").text("Post").attr("class", "btn btn-primary");
+
 	// the below AJAX request is an example of using the /posts API, 
 	// it will return the posts array and can be used below instead of the hard coded post
 	// this is only if we need to modify our code to use AJAX
-	$.getJSON("http://localhost:3000/posts", function(posts) {
-		posts.forEach(function(post) {
-			var $p = $("<p>");
-			$p.text(post.body + " - Post By: " + post.author.username);
-			// replace this with the correct tag ID
-			// $("#pendingTweets").append($p);
-		});
+	$btn_post.on("click", function () {
+		$.post("/posts/new",{ tweetBody:$inputText.val() }).done(refreshPosts);
 	});
 
-// code from twitter to load the twitter widget on the index page 
+	var refreshPosts = function () {
+		// Reset text area.
+		$inputText.val("");
+		setCharLen(0);
+
+		var $psts = $("div.unpublished"),
+			$btns,
+			up = "<span class=\"glyphicon glyphicon-arrow-up\"></span>",
+			down = "<span class=\"glyphicon glyphicon-arrow-down\"></span>";
+
+		$.getJSON("/posts", function(posts) {
+			$psts.empty();
+			posts.forEach(function(post) {
+				$btns = $("<div>").attr("class", "post-btns");
+				$psts.append($("<p>").attr("class", "post").text(post.body + " - Post By: " + post.username + " - Votes: " + post.votes));
+
+				if (post.btn_edit === "true") {
+					$btns.append($("<button>").attr("class", "upvote btn btn-default").bind("click", { id:post.id }, event_edit).text("Edit"));
+				}
+				if (post.btn_vote === "true") {
+					$btns.append($("<button>").attr("class", "upvote btn btn-default").bind("click", { id:post.id }, event_upVote).html(up));
+					$btns.append($("<button>").attr("class", "downvote btn btn-default").bind("click", { id:post.id }, event_downvote).html(down));
+				}
+				if (post.btn_publish === "true") {
+					$btns.append($("<button>").attr("class", "publish btn btn-default").bind("click", { id:post.id }, event_publish).text("Publish to Twitter"));
+				}
+
+				$psts.append($btns);
+			});
+		});
+	};
+
+	// NOTE: Need to add server-side checks to prevent security issues.
+	var event_edit = function (e) {
+		alert("EDIT " + e.data.id);
+	};
+	var event_upVote = function (e) {
+		alert("UP " + e.data.id);
+	};
+	var event_downvote = function (e) {
+		alert("DOWN " + e.data.id);
+	};
+	var event_publish = function (e) {
+		alert("PUBLISH " + e.data.id);
+	};
+
+	// code from twitter to load the twitter widget on the index page 
 	(function(d,s,id) { 
 		var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?"http":"https";
 		if(!d.getElementById(id)) { 
@@ -26,18 +77,16 @@ var main = function () {
 		}
 	}(document,"script","twitter-wjs"));
 
-	var _maxLength = 250,
-		revertInput = "",
-		inputUrl = "",
-		originalLen = 0,
-		$charLen = $("div .char-len"),
-		$inputText = $("textarea.input-text").attr("maxlength",_maxLength).attr("placeholder","Input Tweet"),
-		$btn_revert = $("<button>").text("Revert").attr("class", "btn btn-default").attr("disabled",true),
-		$btn_shorten = $("<button>").text("Shorten").attr("class", "btn btn-default");
-
 	var setCharLen = function(len) {
 		if(len===0) {
 			$btn_shorten.attr("disabled", true);
+			$btn_post.attr("disabled", true);
+		} else if(len <= 140) {
+			$btn_shorten.attr("disabled", true);
+			$btn_post.attr("disabled", false);
+		} else if(len > 139) {
+			$btn_shorten.attr("disabled", false);
+			$btn_post.attr("disabled", true);
 		}
 		$charLen.text(len + "/" + _maxLength);
 	};
@@ -50,8 +99,6 @@ var main = function () {
 	$inputText.on("keyup", function() {
 		if(originalLen !== $inputText.val().length) {
 			setCharLen($inputText.val().length);
-			$btn_revert.attr("disabled", true);
-			$btn_shorten.attr("disabled", false);
 		}
 	});
 
@@ -78,6 +125,7 @@ var main = function () {
 		$btn_revert.attr("disabled", false);
 	});
 
-	$("div .input-buttons").append($btn_revert, $btn_shorten);
+	$("div .input-buttons").append($btn_post, $btn_revert, $btn_shorten);
+	refreshPosts();
 };
 $(document).ready(main);

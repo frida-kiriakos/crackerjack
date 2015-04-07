@@ -60,12 +60,28 @@ router.get("/", function(req,res) {
 	.find()
 	.populate("author")
 	.exec(function (err, posts) {
+		var obj = [];
 		if (err) {
 			console.log(err);
 			res.send("an error occured");
 		}
 		// console.log("posts: " + posts);
-		res.json(posts);
+
+		posts.forEach(function(post) {
+			if (post.published === false) {
+				obj.push({
+					body: post.body,
+					username: post.author.username,
+					votes: (post.upvotes - post.downvotes),
+					btn_edit: (post.author.username === req.session.username) ? "true" : "false",
+					btn_vote: (post.author.username !== req.session.username) ? "true" : "false",
+					btn_publish: (req.session.isAdmin && (post.upvotes - post.downvotes) >= 5) ? "true" : "false",
+					id: post._id
+				});
+			}
+		});
+
+		res.json(obj);
 	});
 });
 
@@ -130,8 +146,12 @@ router.get("/upvote/:id", function(req, res ) {
 					console.log("user already upvoted");
 					return res.redirect("/");
 				} else {
-					post.upvotes = post.upvotes + 1;
+					if (post.downvoters.indexOf(user._id) > -1) {
+						post.downvoters.splice(post.downvoters.indexOf(user._id), 1);
+						post.downvotes = post.downvoters.length;
+					}
 					post.upvoters.push(user._id);
+					post.upvotes = post.upvoters.length;
 					post.save();
 					return res.redirect("/");
 				}
@@ -164,8 +184,12 @@ router.get("/downvote/:id", function(req, res ) {
 					console.log("user already downvoted");
 					return res.redirect("/");
 				} else {
-					post.downvotes = post.downvotes + 1;
+					if (post.upvoters.indexOf(user._id) > -1) {
+						post.upvoters.splice(post.upvoters.indexOf(user._id), 1);
+						post.upvotes = post.upvoters.length;
+					}
 					post.downvoters.push(user._id);
+					post.downvotes = post.downvoters.length;
 					post.save();
 					return res.redirect("/");
 				}

@@ -7,13 +7,23 @@ body{
     padding-top: 70px;
 }
 
+
+.unpublished-title {
+	font-family: 'Bangers', sans-serif;
+	font-size: 2.5em;
+	border-bottom: 3px solid grey;
+}
+
 main .unpublished{
-	float:right;
+	float:left;
+	height: 40em;
 	width: 50%;
+	overflow-y: scroll;
+	padding-right: 1.5em;
 }
 
 main .published{
-	float:left;
+	float:right;
 	width: 50%;
 	font-family: sans-serif;
 }
@@ -26,23 +36,19 @@ div.input-buttons, div.char-len, button{
 	font-size: 1.2em;
 }
 
-div h1.content {
-	font-family: 'Bangers', sans-serif;
-}
-
-.unpublished h1 {
-	font-family: 'Slabo 27px', serif;
-	border-bottom: 3px solid grey;
-}
-
-p.tweetBody, p.note{
+textarea.input-text {
 	font-family: 'Slabo 27px', serif;
 	font-size: 1.1em;
+	resize: none;
 }
-p.post{
+p.post {
 	font-family: 'Slabo 27px', serif;
-	border-bottom: 1px solid grey;
 	font-size: 1.1em;
+	padding-top: 1em;
+}
+.post-btns {
+	border-bottom: 2px solid grey;
+	padding-bottom: 0.5em;
 }
 main .tweetsection {
 	font-family: 'Slabo 27px', serif;

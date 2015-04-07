@@ -14,7 +14,6 @@
 	<body>
 		<header>
 			<div class = "header">
-				<h1>You vote, We post!</h1>
 				<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
 					<div class="navbar-header">
 						<a class = "navbar-brand" href="/">Crackerjack</a>
@@ -28,61 +27,33 @@
 						</ul>
 					</div>
 				</nav>
-				
+				<h1>You vote, We post!</h1>
 			</div>
 		</header>
 
 		<main>
 			<div class ="tweetsection">
-				<p class="post">
-	    			<form action="/posts/new" method="post">
-						<div class="char-len"></div>
-						<div class="form-group">
-							<p class="tweetBody"> Add the tweet you want to post here so your group can vote on it. </label>
-							<p class ="note">Note that you can shorten your post if its length is greater than 140 characters but you need to make sure that the final post is within the 140 chars limit</p>
-	    					<textarea id="tweetBody" name="tweetBody" class="input-text form-control"></textarea>
-	    				</div>
-	    				<!-- validate that the length of post is 140 chars, this validation is performed by the server, can also do a similar one on client side -->
-	    				<% if (session.tweetError) { %>
-	    					<div class="alert alert-danger"><%= session.tweetError%></div>
-	    					<% session.tweetError = ""; %>
-	    				<% } %>
-						<button id="postTweet" type="submit" class="btn btn-primary">Post</button>
-					</form>
+				<div class="post">
+	    			<p class="alert-msg"></p>
+					<div class="char-len"></div>
+					<div class="form-group">
+	    				<textarea id="tweetBody" name="tweetBody" class="input-text form-control"></textarea>
+	    			</div>
+	    			<!-- validate that the length of post is 140 chars, this validation is performed by the client (public/app.js) and server -->
+	    			<% if (session.tweetError) { %>
+	    				<div class="alert alert-danger"><%= session.tweetError%></div>
+	    				<% session.tweetError = ""; %>
+	    			<% } %>
 					<div class="input-buttons"></div>
-				</p>	
+				</div>	
     		</div>
-<!-- I noticed that it takes a while for the widget to update and it also slows down the page, we should consider using stream twitter API or feed API under routes -->
+
+			<h1 class="unpublished-title">Pending Tweets</h1>
+			<div class="unpublished"></div>
+
+			<!-- I noticed that it takes a while for the widget to update and it also slows down the page, we should consider using stream twitter API or feed API under routes -->
     		<div class ="published">
 				<a class="twitter-timeline" href="https://twitter.com/CrackerJack473" data-widget-id="575783346589974529"data-chrome = "nofooter noscrollbar" data-tweet-limit ="5">Tweets by @CrackerJack473</a>
-			</div>
-
-			<div class ="unpublished">
-				<h1 class = "content">Pending Tweets</h1>
-				<!-- we can use the below embedded JS or use the /posts API, same for the votes -->
-					<% if (posts) { %>
-						<% posts.forEach(function(post) { %>
-							<% if (post.published === false) { %>
-								<p class="post"><%= post.body%> 
-									<%if (post.author) { %>
-										- By: <%= post.author.username%>
-									<% } %>
-										- Votes: <%= post.upvotes - post.downvotes%>
-								</p>
-								
-								<% if(post.author.username !== username) { %>
-									<a href="/posts/upvote/<%= post._id%>" class="btn btn-default"><span class="glyphicon glyphicon-arrow-up"></span></a>
-
-									<a href="/posts/downvote/<%= post._id%>" class="btn btn-default"><span class="glyphicon glyphicon-arrow-down"></span></a>
-								<% } %>
-								<% if(isAdmin) { %>
-									<% if (post.upvotes - post.downvotes >= 5) { %>
-										<a href="/publish/<%= post._id%>" class="btn btn-default">Publish to Twitter</a>
-									<% } %>
-								<% } %>
-							<% } %>				
-						<%});%>
-					<% } %>
 			</div>
 
 		</main>
