@@ -46,17 +46,18 @@
 	    			<% } %>
 					<div class="input-buttons"></div>
 				</div>	
+
+				<h1 class="unpublished-title">Pending Tweets</h1>
+				<div class="unpublished"></div>
+	
+				<!-- I noticed that it takes a while for the widget to update and it also slows down the page, we should 	consider using stream twitter API or feed API under routes -->
+    			<div class ="published">
+					<a class="twitter-timeline" href="https://twitter.com/CrackerJack473" data-widget-id="575783346589974529"	data-chrome = "nofooter noscrollbar" data-tweet-limit ="50">Tweets by @CrackerJack473</a>
+				</div>
     		</div>
 
-			<h1 class="unpublished-title">Pending Tweets</h1>
-			<div class="unpublished"></div>
-
-			<!-- I noticed that it takes a while for the widget to update and it also slows down the page, we should consider using stream twitter API or feed API under routes -->
-    		<div class ="published">
-				<a class="twitter-timeline" href="https://twitter.com/CrackerJack473" data-widget-id="575783346589974529"data-chrome = "nofooter noscrollbar" data-tweet-limit ="5">Tweets by @CrackerJack473</a>
-			</div>
-
 		</main>
+
         <script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
         <script src="javascripts/app.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>

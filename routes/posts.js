@@ -12,7 +12,8 @@ var User = require("../models/user");
 // creates the post, adds it to the user posts array then redirects to the index page
 router.post("/new", function(req,res) {
 	if(!req.session.isAuthorized) {
-		return res.redirect("/login");
+		//return res.redirect("/login");
+		return res.json()
 	}
 	
 	User.findOne({username: req.session.username}, function(err, user) {
@@ -23,7 +24,7 @@ router.post("/new", function(req,res) {
 			// TODO: we need to retain the tweetBody after we return from the error, or add client side validation 
 			console.log("tweet body is greater than 140 characters");
 			req.session.tweetError = "Tweet body is greater than 140 characters";
-			return res.redirect("/");
+			return res.json("error");
 		}
 		console.log("user: " + user.username);
 
@@ -47,7 +48,7 @@ router.post("/new", function(req,res) {
 				console.log("post created successfully");
 			}
 			
-			return res.redirect("/");
+			return res.json("success");
 		});
 
 	});	
@@ -60,7 +61,7 @@ router.get("/", function(req,res) {
 	.find()
 	.populate("author")
 	.exec(function (err, posts) {
-		var obj = [];
+		var postsObj = [];
 		if (err) {
 			console.log(err);
 			res.send("an error occured");
@@ -69,7 +70,7 @@ router.get("/", function(req,res) {
 
 		posts.forEach(function(post) {
 			if (post.published === false) {
-				obj.push({
+				postsObj.push({
 					body: post.body,
 					username: post.author.username,
 					votes: (post.upvotes - post.downvotes),
@@ -81,7 +82,12 @@ router.get("/", function(req,res) {
 			}
 		});
 
-		res.json(obj);
+		// Ensures the posts are sorted based on the number of votes.
+		postsObj.sort(function(a, b){
+ 			return(b.votes-a.votes);
+		});
+		
+		res.json(postsObj);
 	});
 });
 
@@ -124,6 +130,7 @@ router.post("/edit", function(req, res ) {
 });
 
 router.get("/upvote/:id", function(req, res ) {
+	console.log("UPVOTE");
 	Post
 	.findOne({_id: req.params.id})
 	// .populate("author")
@@ -133,6 +140,8 @@ router.get("/upvote/:id", function(req, res ) {
 			return res.redirect("/");
 		}
 
+		console.log("UPVOTE: Post Found");
+
 		// check if the logged in user has already voted on the post
 		User
 		.findOne({username: req.session.username})
@@ -141,10 +150,11 @@ router.get("/upvote/:id", function(req, res ) {
 				console.log(err);
 				return res.redirect("/");
 			} else {
+				console.log("UPVOTE: User Found");
 				if (post.upvoters.indexOf(user._id) > -1) {
 					// user already voted
 					console.log("user already upvoted");
-					return res.redirect("/");
+					return res.json("error");
 				} else {
 					if (post.downvoters.indexOf(user._id) > -1) {
 						post.downvoters.splice(post.downvoters.indexOf(user._id), 1);
@@ -153,7 +163,7 @@ router.get("/upvote/:id", function(req, res ) {
 					post.upvoters.push(user._id);
 					post.upvotes = post.upvoters.length;
 					post.save();
-					return res.redirect("/");
+					return res.json("success");
 				}
 			}
 		});
@@ -177,12 +187,12 @@ router.get("/downvote/:id", function(req, res ) {
 		.exec(function(err, user) {
 			if (err) {
 				console.log(err);
-				return res.redirect("/");
+				return res.json("error");
 			} else {
 				if (post.downvoters.indexOf(user._id) > -1) {
 					// user already voted
 					console.log("user already downvoted");
-					return res.redirect("/");
+					return res.json("error");
 				} else {
 					if (post.upvoters.indexOf(user._id) > -1) {
 						post.upvoters.splice(post.upvoters.indexOf(user._id), 1);
@@ -191,8 +201,41 @@ router.get("/downvote/:id", function(req, res ) {
 					post.downvoters.push(user._id);
 					post.downvotes = post.downvoters.length;
 					post.save();
-					return res.redirect("/");
+					return res.json("success");
 				}
+			}
+		});
+	});
+});
+
+// Cancel vote.
+router.get("/cancelvote/:id", function(req, res ) {
+	Post
+	.findOne({_id: req.params.id})
+	// .populate("author")
+	.exec(function (err, post) {
+		if (err) {
+			console.log(err);
+			return res.redirect("/");
+		}
+		// check if the logged in user has already voted on the post
+		User
+		.findOne({username: req.session.username})
+		.exec(function(err, user) {
+			if (err) {
+				console.log(err);
+				return res.json("error");
+			} else {
+				if (post.downvoters.indexOf(user._id) > -1) {
+					post.downvoters.splice(post.downvoters.indexOf(user._id), 1);
+					post.downvotes = post.downvoters.length;
+				}
+				if (post.upvoters.indexOf(user._id) > -1) {
+					post.upvoters.splice(post.upvoters.indexOf(user._id), 1);
+					post.upvotes = post.upvoters.length;
+				}
+				post.save();
+				return res.json("success");
 			}
 		});
 	});
