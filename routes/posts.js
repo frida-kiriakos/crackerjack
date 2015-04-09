@@ -117,21 +117,26 @@ router.get("/:username", function(req,res ) {
 router.post("/edit", function(req, res ) {
 	Post
 	.findOne({_id: req.body.post_id})
+	.populate("author")
 	.exec(function (err, post) {
 		if (err) {
 			console.log(err);
 			return res.json("error");
 		} else {
-			post.body = req.body.post_body;
-			post.save();
-			return res.json("success");
+			if (post.author.username === req.session.username || req.session.isAdmin) {
+				post.body = req.body.post_body;
+				post.save();
+				return res.json("success");
+			} else {
+				console.log("you are not allowed to edit");
+				return res.json("you are not allowed to edit");
+			}
 		}
 
 	});
 });
 
 router.get("/upvote/:id", function(req, res ) {
-	console.log("UPVOTE");
 	Post
 	.findOne({_id: req.params.id})
 	// .populate("author")
@@ -149,20 +154,23 @@ router.get("/upvote/:id", function(req, res ) {
 				console.log(err);
 				return res.redirect("/");
 			} else {
-				if (post.upvoters.indexOf(user._id) > -1) {
-					// user already voted
-					console.log("user already upvoted");
-					return res.json("error");
-				} else {
-					// check whether the user has already downvoted on the post, in this case remove the user from the list of downvoters
-					if (post.downvoters.indexOf(user._id) > -1) {
-						post.downvoters.splice(post.downvoters.indexOf(user._id), 1);
-						post.downvotes = post.downvoters.length;
+				if (post.author._id !== user._id) {
+
+					if (post.upvoters.indexOf(user._id) > -1) {
+						// user already voted
+						console.log("user already upvoted");
+						return res.json("error");
+					} else {
+						// check whether the user has already downvoted on the post, in this case remove the user from the list of downvoters
+						if (post.downvoters.indexOf(user._id) > -1) {
+							post.downvoters.splice(post.downvoters.indexOf(user._id), 1);
+							post.downvotes = post.downvoters.length;
+						}
+						post.upvoters.push(user._id);
+						post.upvotes = post.upvoters.length;
+						post.save();
+						return res.json("success");
 					}
-					post.upvoters.push(user._id);
-					post.upvotes = post.upvoters.length;
-					post.save();
-					return res.json("success");
 				}
 			}
 		});
@@ -188,19 +196,22 @@ router.get("/downvote/:id", function(req, res ) {
 				console.log(err);
 				return res.json("error");
 			} else {
-				if (post.downvoters.indexOf(user._id) > -1) {
-					// user already voted
-					console.log("user already downvoted");
-					return res.json("error");
-				} else {
-					if (post.upvoters.indexOf(user._id) > -1) {
-						post.upvoters.splice(post.upvoters.indexOf(user._id), 1);
-						post.upvotes = post.upvoters.length;
+				// check if the user voting is not the author
+				if (post.author._id !== user._id) {
+					if (post.downvoters.indexOf(user._id) > -1) {
+						// user already voted
+						console.log("user already downvoted");
+						return res.json("error");
+					} else {
+						if (post.upvoters.indexOf(user._id) > -1) {
+							post.upvoters.splice(post.upvoters.indexOf(user._id), 1);
+							post.upvotes = post.upvoters.length;
+						}
+						post.downvoters.push(user._id);
+						post.downvotes = post.downvoters.length;
+						post.save();
+						return res.json("success");
 					}
-					post.downvoters.push(user._id);
-					post.downvotes = post.downvoters.length;
-					post.save();
-					return res.json("success");
 				}
 			}
 		});
@@ -225,16 +236,18 @@ router.get("/cancelvote/:id", function(req, res ) {
 				console.log(err);
 				return res.json("error");
 			} else {
-				if (post.downvoters.indexOf(user._id) > -1) {
-					post.downvoters.splice(post.downvoters.indexOf(user._id), 1);
-					post.downvotes = post.downvoters.length;
+				if (post.author._id !== user._id) {
+					if (post.downvoters.indexOf(user._id) > -1) {
+						post.downvoters.splice(post.downvoters.indexOf(user._id), 1);
+						post.downvotes = post.downvoters.length;
+					}
+					if (post.upvoters.indexOf(user._id) > -1) {
+						post.upvoters.splice(post.upvoters.indexOf(user._id), 1);
+						post.upvotes = post.upvoters.length;
+					}
+					post.save();
+					return res.json("success");
 				}
-				if (post.upvoters.indexOf(user._id) > -1) {
-					post.upvoters.splice(post.upvoters.indexOf(user._id), 1);
-					post.upvotes = post.upvoters.length;
-				}
-				post.save();
-				return res.json("success");
 			}
 		});
 	});
