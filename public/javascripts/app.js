@@ -7,11 +7,15 @@ var main = function () {
 		revertInput = "",
 		inputUrl = "",
 		originalLen = 0,
+		editPostId = "",
+		isPost = true, // Used to keep track of which function the enter key triggers in the inputText area.
 		$charLen = $("div .char-len"),
 		$inputText = $("textarea.input-text").attr("maxlength",_maxLength).attr("placeholder","Add the tweet you want to post here, so your group can vote on it. (NOTE: Posts must meet Twitter's 140 Character limit)"),
 		$btn_revert = $("<button>").text("Revert").attr("class", "btn btn-default").attr("disabled",true),
 		$btn_shorten = $("<button>").text("Shorten").attr("class", "btn btn-default"),
-		$btn_post = $("<button>").text("Post").attr("class", "btn btn-primary");
+		$btn_post = $("<button>").text("Post").attr("class", "btn btn-primary"),
+		$btn_update = $("<button>").text("Update").attr("class", "btn btn-primary"),
+		$btn_cancelUpdate = $("<button>").text("Cancel").attr("class", "btn btn-primary");
 
 	// the below AJAX request is an example of using the /posts API, 
 	// it will return the posts array and can be used below instead of the hard coded post
@@ -19,6 +23,30 @@ var main = function () {
 	$btn_post.on("click", function () {
 		$.post("/posts/new",{ tweetBody:$inputText.val() }).done(refreshPosts);
 	});
+
+	$btn_update.on("click", function () {
+		$.post("/posts/edit",{ post_id:editPostId, post_body:$inputText.val() }).done(refreshPosts);
+	});
+
+	$btn_cancelUpdate.on("click", function () {
+		$inputText.val("");
+		setCharLen(0);
+		btns_setPost();
+	});
+
+	var btns_setPost = function () {
+		isPost = true;
+		$btn_post.show();
+		$btn_update.hide();
+		$btn_cancelUpdate.hide();
+	};
+
+	var btns_setEdit = function () {
+		isPost = false;
+		$btn_post.hide();
+		$btn_update.show();
+		$btn_cancelUpdate.show();
+	};
 
 	var refreshPosts = function () {
 		// Reset text area.
@@ -28,42 +56,50 @@ var main = function () {
 		var $psts = $("div.unpublished"),
 			$btns,
 			up = "<span class=\"glyphicon glyphicon-arrow-up\"></span>",
-			down = "<span class=\"glyphicon glyphicon-arrow-down\"></span>";
+			down = "<span class=\"glyphicon glyphicon-arrow-down\"></span>",
+			cancel = "<span class=\"glyphicon glyphicon-remove\"></span>";
 
 		$.getJSON("/posts", function(posts) {
 			$psts.empty();
 			posts.forEach(function(post) {
 				$btns = $("<div>").attr("class", "post-btns");
-				$psts.append($("<p>").attr("class", "post").text(post.body + " - Post By: " + post.username + " - Votes: " + post.votes));
+				$psts.append($("<p>").attr("id", post.id).attr("class", "post").html(post.body + "<div class=\"post-author-votes\"> - Post By: " + post.username + " - Votes: " + post.votes + "</div>"));
 
 				if (post.btn_edit === "true") {
-					$btns.append($("<button>").attr("class", "upvote btn btn-default").bind("click", { id:post.id }, event_edit).text("Edit"));
+					$btns.append($("<button>").attr("class", "upvote btn btn-default").bind("click", { post:post }, event_edit).text("Edit"));
 				}
 				if (post.btn_vote === "true") {
-					$btns.append($("<button>").attr("class", "upvote btn btn-default").bind("click", { id:post.id }, event_upVote).html(up));
-					$btns.append($("<button>").attr("class", "downvote btn btn-default").bind("click", { id:post.id }, event_downvote).html(down));
+					$btns.append($("<button>").attr("class", "upvote btn btn-default").bind("click", { post:post }, event_upVote).html(up));
+					$btns.append($("<button>").attr("class", "cancelvote btn btn-default").bind("click", { post:post }, event_cancelvote).html(cancel));
+					$btns.append($("<button>").attr("class", "downvote btn btn-default").bind("click", { post:post }, event_downvote).html(down));
 				}
 				if (post.btn_publish === "true") {
-					$btns.append($("<button>").attr("class", "publish btn btn-default").bind("click", { id:post.id }, event_publish).text("Publish to Twitter"));
+					$btns.append($("<button>").attr("class", "publish btn btn-default").bind("click", { post:post }, event_publish).text("Publish to Twitter"));
 				}
 
 				$psts.append($btns);
 			});
+			btns_setPost();
 		});
 	};
 
 	// NOTE: Need to add server-side checks to prevent security issues.
 	var event_edit = function (e) {
-		alert("EDIT " + e.data.id);
+		$inputText.val(e.data.post.body);
+		editPostId = e.data.post.id;
+		btns_setEdit();
 	};
 	var event_upVote = function (e) {
-		alert("UP " + e.data.id);
+		$.getJSON("/posts/upvote/" + e.data.post.id, refreshPosts);
 	};
 	var event_downvote = function (e) {
-		alert("DOWN " + e.data.id);
+		$.getJSON("/posts/downvote/" + e.data.post.id, refreshPosts);
+	};
+	var event_cancelvote = function (e) {
+		$.getJSON("/posts/cancelvote/" + e.data.post.id, refreshPosts);
 	};
 	var event_publish = function (e) {
-		alert("PUBLISH " + e.data.id);
+		$.getJSON("/publish/" + e.data.post.id, refreshPosts);
 	};
 
 	// code from twitter to load the twitter widget on the index page 
@@ -92,11 +128,18 @@ var main = function () {
 	};
 	setCharLen(0);
 
-	$inputText.on("keydown", function() {
+	$inputText.on("keydown", function (e) {
+		if (e.keyCode === 13) {
+			if(isPost) {
+				$btn_post.click();
+			} else {
+				$btn_update.click();
+			}
+		}
 		originalLen = $inputText.val().length;
 	});
 
-	$inputText.on("keyup", function() {
+	$inputText.on("keyup", function () {
 		if(originalLen !== $inputText.val().length) {
 			setCharLen($inputText.val().length);
 		}
@@ -125,7 +168,7 @@ var main = function () {
 		$btn_revert.attr("disabled", false);
 	});
 
-	$("div .input-buttons").append($btn_post, $btn_revert, $btn_shorten);
+	$("div .input-buttons").append($btn_update, $btn_cancelUpdate, $btn_post, $btn_revert, $btn_shorten);
 	refreshPosts();
 };
 $(document).ready(main);

@@ -17,31 +17,30 @@ var twitterClient = new Twitter(credentials);
 // publish to twitter function, accepts the post id to be published as a parameter
 // can also check here if the current_user is an admin
 router.get("/:post_id", function(req, res) {
-  if(!req.session.isAuthorized) {
-    return res.redirect("/login");
-  }
-  
-  Post
-  .findOne({_id: req.params.post_id})
-  .populate("author")
-  .exec(function (err, post ) {
-    if (err) {
-      console.log(err);
-      return res.redirect("/");
+    if(!req.session.isAuthorized && req.session.isAuthorized) {
+        return res.redirect("/login");
     }
+  
+    Post
+    .findOne({_id: req.params.post_id})
+    .populate("author")
+    .exec(function (err, post ) {
+        if (err) {
+            console.log(err);
+            return res.redirect("/");
+        }
 
-    twitterClient.post("statuses/update", {status: post.body},  function(error) {
-      if (!error) {
-        post.published = true;
-        post.save();
-        return res.redirect("/");
-      } else {
-        console.log("error: " + JSON.stringify(error));
-        return res.redirect("/");
-      }
-      
+        twitterClient.post("statuses/update", { status: post.body },  function(error) {
+            if (!error) {
+                post.published = true;
+                post.save();
+                return res.json("success");
+            } else {
+                console.log("error: " + JSON.stringify(error));
+                return res.json("error");
+            }
+        });
     });
-  });
 });
 
 module.exports = router;
