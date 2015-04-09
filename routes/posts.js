@@ -13,7 +13,7 @@ var User = require("../models/user");
 router.post("/new", function(req,res) {
 	if(!req.session.isAuthorized) {
 		//return res.redirect("/login");
-		return res.json()
+		return res.json();
 	}
 	
 	User.findOne({username: req.session.username}, function(err, user) {
