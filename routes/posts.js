@@ -65,7 +65,6 @@ router.get("/", function(req,res) {
 			console.log(err);
 			res.send("an error occured");
 		}
-		// console.log("posts: " + posts);
 
 		posts.forEach(function(post) {
 			if (post.published === false) {
@@ -133,7 +132,7 @@ router.get("/upvote/:id", function(req, res ) {
 			return res.redirect("/");
 		}
 
-		// check if the logged in user has already voted on the post
+		// check if the logged in user has already upvoted on the post
 		User
 		.findOne({username: req.session.username})
 		.exec(function(err, user) {
@@ -146,6 +145,7 @@ router.get("/upvote/:id", function(req, res ) {
 					console.log("user already upvoted");
 					return res.redirect("/");
 				} else {
+					// check whether the user has already downvoted on the post, in this case remove the user from the list of downvoters
 					if (post.downvoters.indexOf(user._id) > -1) {
 						post.downvoters.splice(post.downvoters.indexOf(user._id), 1);
 						post.downvotes = post.downvoters.length;
