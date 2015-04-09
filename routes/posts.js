@@ -50,7 +50,6 @@ router.post("/new", function(req,res) {
 			
 			return res.json("success");
 		});
-
 	});	
 });
 
@@ -142,10 +141,7 @@ router.get("/upvote/:id", function(req, res ) {
 			return res.redirect("/");
 		}
 
-<<<<<<< HEAD
 		// check if the logged in user has already voted on the post
-=======
->>>>>>> origin/master
 		User
 		.findOne({username: req.session.username})
 		.exec(function(err, user) {
