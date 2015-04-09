@@ -3,12 +3,20 @@ body{
     margin-top: 70px;
     margin-right: 50px;
     margin-left: 50px;
-    margin-bottom: 530px;
+    margin-bottom: 600px;
 }
 
 
 .unpublished-title {
+	float: left;
 	font-family: 'Bangers', sans-serif;
+	width: 50%;
+	font-size: 2.5em;
+}
+.published-title {
+	float: right;
+	font-family: 'Bangers', sans-serif;
+	width: 50%;
 	font-size: 2.5em;
 }
 
