@@ -48,6 +48,16 @@ var main = function () {
 		$btn_cancelUpdate.show();
 	};
 
+	var initTweets = function () {
+		var $tweetsUrl = $("<a>").attr("class", "twitter-timeline")
+					.attr("href", "https://twitter.com/CrackerJack473")
+					.attr("data-widget-id", "575783346589974529")
+					.attr("data-chrome", "noheader nofooter transparent")
+					.attr("height", "498")
+					.text("Tweets by @CrackerJack473");
+		$("div.published").append($tweetsUrl);
+	};
+
 	var refreshPosts = function () {
 		// Reset text area.
 		$inputText.val("");
@@ -170,5 +180,6 @@ var main = function () {
 
 	$("div .input-buttons").append($btn_update, $btn_cancelUpdate, $btn_post, $btn_revert, $btn_shorten);
 	refreshPosts();
+	initTweets();
 };
 $(document).ready(main);

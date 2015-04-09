@@ -10,13 +10,12 @@ body{
 .unpublished-title {
 	font-family: 'Bangers', sans-serif;
 	font-size: 2.5em;
-	border-bottom: 3px solid grey;
 }
 
 main .unpublished{
 	float:left;
 	border: 1px solid grey;
-	height: 35em;
+	height: 500px;
 	width: 50%;
 	overflow-y: scroll;
 	padding-right: 1.5em;
@@ -25,13 +24,10 @@ main .unpublished{
 
 main .published {
 	float:right;
-	background: white;
 	border: 1px solid grey;
-	height: 35em;
+	height: 500px;
 	width: 50%;
-	overflow-y: scroll;
 	font-family: sans-serif;
-	padding-right: 1.5em;
 }
 
 header {
@@ -41,6 +37,11 @@ header {
 div.input-buttons, div.char-len, button{
 	font-family: 'Bangers', sans-serif;
 	font-size: 1.2em;
+}
+
+div.input-buttons {
+	border-bottom: 3px solid grey;
+	padding-bottom: 1em;
 }
 
 textarea.input-text {

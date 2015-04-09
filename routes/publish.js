@@ -17,7 +17,7 @@ var twitterClient = new Twitter(credentials);
 // publish to twitter function, accepts the post id to be published as a parameter
 // can also check here if the current_user is an admin
 router.get("/:post_id", function(req, res) {
-    if(!req.session.isAuthorized && req.session.isAuthorized) {
+    if(!req.session.isAuthorized && req.session.isAdmin) {
         return res.redirect("/login");
     }
   

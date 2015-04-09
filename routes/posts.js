@@ -60,34 +60,36 @@ router.get("/", function(req,res) {
 	Post
 	.find()
 	.populate("author")
+	.sort({upvotes:-1, downvotes:1})
 	.exec(function (err, posts) {
 		var postsObj = [];
 		if (err) {
 			console.log(err);
 			res.send("an error occured");
 		}
-		// console.log("posts: " + posts);
 
-		posts.forEach(function(post) {
-			if (post.published === false) {
-				postsObj.push({
-					body: post.body,
-					username: post.author.username,
-					votes: (post.upvotes - post.downvotes),
-					btn_edit: (post.author.username === req.session.username) ? "true" : "false",
-					btn_vote: (post.author.username !== req.session.username) ? "true" : "false",
-					btn_publish: (req.session.isAdmin && (post.upvotes - post.downvotes) >= 5) ? "true" : "false",
-					id: post._id
-				});
+		User
+		.count(function (err, count) {
+			if (err) {
+				console.log(err);
+				res.send("an error occurred");
 			}
-		});
 
-		// Ensures the posts are sorted based on the number of votes.
-		postsObj.sort(function(a, b){
- 			return(b.votes-a.votes);
+			posts.forEach(function(post) {
+				if (post.published === false) {
+					postsObj.push({
+						body: post.body,
+						username: post.author.username,
+						votes: (post.upvotes - post.downvotes),
+						btn_edit: (post.author.username === req.session.username) ? "true" : "false",
+						btn_vote: (post.author.username !== req.session.username) ? "true" : "false",
+						btn_publish: (req.session.isAdmin && ((post.upvotes - post.downvotes) >= (count / 2))) ? "true" : "false",
+						id: post._id
+					});
+				}
+			});
+			res.json(postsObj);
 		});
-		
-		res.json(postsObj);
 	});
 });
 
@@ -140,9 +142,10 @@ router.get("/upvote/:id", function(req, res ) {
 			return res.redirect("/");
 		}
 
-		console.log("UPVOTE: Post Found");
-
+<<<<<<< HEAD
 		// check if the logged in user has already voted on the post
+=======
+>>>>>>> origin/master
 		User
 		.findOne({username: req.session.username})
 		.exec(function(err, user) {
@@ -150,12 +153,12 @@ router.get("/upvote/:id", function(req, res ) {
 				console.log(err);
 				return res.redirect("/");
 			} else {
-				console.log("UPVOTE: User Found");
 				if (post.upvoters.indexOf(user._id) > -1) {
 					// user already voted
 					console.log("user already upvoted");
 					return res.json("error");
 				} else {
+					// check whether the user has already downvoted on the post, in this case remove the user from the list of downvoters
 					if (post.downvoters.indexOf(user._id) > -1) {
 						post.downvoters.splice(post.downvoters.indexOf(user._id), 1);
 						post.downvotes = post.downvoters.length;
