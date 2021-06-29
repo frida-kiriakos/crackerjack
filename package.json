@@ -15,7 +15,7 @@
     "serve-favicon": "~2.2.0",
     "twitter": "~1.2.5",
     "express-session": "1.10.4",
-    "mongoose": "~3.8.0"
+    "mongoose": "~5.13.0"
   },
   "repository": {
     "type": "git",
